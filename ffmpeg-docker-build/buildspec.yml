@@ -1,0 +1,18 @@
+version: 0.2
+
+phases:
+  pre_build:
+    commands:
+      - echo Logging in to Amazon ECR...
+      - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 627073650114.dkr.ecr.us-east-1.amazonaws.com
+  build:
+    commands:
+      - echo Building the Docker image...
+      - docker build -t ffmpeg-processing .
+      - docker tag ffmpeg-processing:latest 627073650114.dkr.ecr.us-east-1.amazonaws.com/ffmpeg-processing:latest
+  post_build:
+    commands:
+      - echo Pushing the Docker image...
+      - docker push 627073650114.dkr.ecr.us-east-1.amazonaws.com/ffmpeg-processing:latest
+artifacts:
+  files: []
